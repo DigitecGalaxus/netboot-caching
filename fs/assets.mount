@@ -1,0 +1,9 @@
+[Unit]
+Description=Automounting assets directory if available.
+
+[Mount]
+Where=/home/master/netboot/assets
+What=/dev/nvme0n1p1
+Type=ext4
+Options=defaults,nofail
+TimeoutSec=10

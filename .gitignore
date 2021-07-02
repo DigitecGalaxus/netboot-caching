@@ -1,0 +1,5 @@
+*.pem
+*.pub
+date.txt
+newfilesystemcaching.tar
+new.squashfscaching
