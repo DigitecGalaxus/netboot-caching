@@ -6,6 +6,8 @@ The caching server itself is designed to be network booted, a squashfs file is b
 
 The caching server runs a Docker daemon and an Nginx container, which serves the files which are present in an assets folder. The idea is that the netboot server knows about it's caching servers and pushes the files onto it with the [syncer functionality](https://github.com/DigitecGalaxus/netboot/tree/main/netboot-services/sync) (using `rsync` with an SSH connection). Therefore the caching functionality of Nginx is not used, as all files are available locally.
 
+[![Build Status](https://digitecgalaxus.visualstudio.com/SystemEngineering/_apis/build/status/caching-server?branchName=main)](https://digitecgalaxus.visualstudio.com/SystemEngineering/_build/latest?definitionId=1184&branchName=main)
+
 ## Prerequisites
 
 - A docker host to build it manually or access to Azure DevOps to build it automatically with the [azure-pipelines.yml](azure-pipelines.yml) file.
