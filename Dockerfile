@@ -46,9 +46,9 @@ RUN ln -s /etc/systemd/system/docker-compose@.service /etc/systemd/system/multi-
 #RUN ln -s /etc/systemd/system/home-master-netboot-assets.mount /etc/systemd/system/multi-user.target.wants/home-master-netboot-assets.mount
 
 # Copy and configure squashfs-syncer to start upon boot.
-COPY ./language/keyboard-configure.sh /usr/local/bin/keyboard-configure.sh
-COPY ./language/keyboard-configure.service /etc/systemd/system/keyboard-configure.service
-RUN sudo ln -s /etc/systemd/system/keyboard-configure.service /etc/systemd/system/multi-user.target.wants/keyboard-configure.service
+COPY ./fs/automounter.sh /usr/local/bin/automounter.sh.sh
+COPY ./fs/automounter.service /etc/systemd/system/automounter.service
+RUN sudo ln -s /etc/systemd/system/automounter.service /etc/systemd/system/multi-user.target.wants/automounter.service
 
 # Upgrade all packages
 # Invalidating the Docker build cache first
