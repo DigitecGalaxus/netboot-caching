@@ -62,7 +62,7 @@ TODO: link to the complete `rsync` command in the netboot README, once the [PR 2
 
 ## How to configure a local stateful disk to cache assets
 
-In case of a power outage it could become critical when all clients (including the caching-server) try to boot from the network simultaneously. Therefore a local disk can be added to cache these images.
+In case of a power outage it could become critical when all clients (including the caching-server) try to boot from the network simultaneously. Therefore a local disk can be added to cache both the caching-server squashfs and images for thinclients.
 
 _Note: This is a manual process._
 
@@ -73,7 +73,8 @@ Make sure to follow the following steps:
 3. Create a new partition table using `cfdisk /dev/nvme0n1` and choose GPT as partition table layout as well as Linux Filesystem as the type for the single partition you're creating. Make sure to write the changes to the disk.
 4. Format this partition with ext4 using `mkfs.ext4 /dev/nvme0n1p1`.
 5. After this and a reboot, you can confirm that the partition is mounted using `mount`.
-6. Make sure the permissions are set properly using `chown -R master.master netboot/assets`.
+6. Make sure the permissions are set properly using `chown -R master.master netboot/assets` & `chown -R master.master netboot/casper`.
+7. Change the Caching-Server ipxe to boot from the local disk (TODO: Add instructions here).
 
 You're done setting up a stateful disk.
 
