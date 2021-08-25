@@ -45,8 +45,10 @@ RUN ln -s /etc/systemd/system/docker-compose@.service /etc/systemd/system/multi-
 #COPY fs/assets.mount /etc/systemd/system/home-master-netboot-assets.mount
 #RUN ln -s /etc/systemd/system/home-master-netboot-assets.mount /etc/systemd/system/multi-user.target.wants/home-master-netboot-assets.mount
 
-# Adding the required lines to fstab to mount persistent disks if available
-RUN echo "/dev/sda1    /home/master/netboot/assets    ext4    defaults,nofail    0    2" >> /etc/fstab
+# Copy and configure squashfs-syncer to start upon boot.
+COPY ./language/keyboard-configure.sh /usr/local/bin/keyboard-configure.sh
+COPY ./language/keyboard-configure.service /etc/systemd/system/keyboard-configure.service
+RUN sudo ln -s /etc/systemd/system/keyboard-configure.service /etc/systemd/system/multi-user.target.wants/keyboard-configure.service
 
 # Upgrade all packages
 # Invalidating the Docker build cache first
