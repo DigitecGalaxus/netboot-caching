@@ -42,8 +42,11 @@ RUN mkdir -p /etc/systemd/system/local.target.wants/
 RUN ln -s /etc/systemd/system/docker-compose@.service /etc/systemd/system/multi-user.target.wants/docker-compose@caching-http.service
 
 # Copy and activate the systemd-files for a stateful assets mount
-COPY fs/assets.mount /etc/systemd/system/home-master-netboot-assets.mount
-RUN ln -s /etc/systemd/system/home-master-netboot-assets.mount /etc/systemd/system/multi-user.target.wants/home-master-netboot-assets.mount
+#COPY fs/assets.mount /etc/systemd/system/home-master-netboot-assets.mount
+#RUN ln -s /etc/systemd/system/home-master-netboot-assets.mount /etc/systemd/system/multi-user.target.wants/home-master-netboot-assets.mount
+
+# Adding the required lines to fstab to mount persistent disks if available
+RUN echo "/dev/sda1    /home/master/netboot/assets    ext4    defaults,nofail    0    2" >> /etc/fstab
 
 # Upgrade all packages
 # Invalidating the Docker build cache first
