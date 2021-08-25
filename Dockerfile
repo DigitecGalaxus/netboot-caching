@@ -46,7 +46,7 @@ RUN ln -s /etc/systemd/system/docker-compose@.service /etc/systemd/system/multi-
 #RUN ln -s /etc/systemd/system/home-master-netboot-assets.mount /etc/systemd/system/multi-user.target.wants/home-master-netboot-assets.mount
 
 # Copy and configure squashfs-syncer to start upon boot.
-COPY ./fs/automounter.sh /usr/local/bin/automounter.sh.sh
+COPY ./fs/automounter.sh /usr/local/share/scripts/automounter.sh
 COPY ./fs/automounter.service /etc/systemd/system/automounter.service
 RUN sudo ln -s /etc/systemd/system/automounter.service /etc/systemd/system/multi-user.target.wants/automounter.service
 
