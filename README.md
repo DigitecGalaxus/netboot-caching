@@ -21,7 +21,8 @@ The caching-server boots via iPXE too. But as it caches (hence "caching-server")
 
 After booting up, the disk will be mounted to the location where the squashfs-images are accessible to be kept up-to-date.
 
-So the caching-server will load the most recent image when booting. When booted, the synchronization makes sure, all images are up-to-date.
+So the caching-server will load the most recent image when booting. When booted, the synchronization of the main netboot server makes sure that all images are up-to-date.
+
 
 ## How to add caching-servers
 
