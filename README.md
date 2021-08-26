@@ -16,7 +16,8 @@ The caching server runs a Docker daemon and an Nginx container, which serves the
 
 ## State considerations
 
-The caching-server boots via iPXE too. But as he caches (hence "caching-server") all squashfs-images (including his own), we configured iPXE in a way, that he boots himself off his own image located on his own harddisk. Still, this boot works stateless: The whole image is loaded to RAM and thereafter no diskaccess is necessary to run the OS.
+The caching-server boots via iPXE too. But as it caches (hence "caching-server") all squashfs-images (including it's own), the iPXE menu for the caching server is configured such that it boots the squashfs file located on it's own harddisk. Still, this boot is stateless: The whole image is loaded to RAM and thereafter no disk access is necessary to run the OS.
+
 
 After booting up, the disk will be mounted to the location where the squashfs-images are accessible to be kept up-to-date.
 
