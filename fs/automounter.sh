@@ -6,4 +6,4 @@ mount -o defaults,nofail /dev/sda1 /home/master/netboot
 mount -o defaults,nofail /dev/nvme0n1p1 /home/master/netboot
 
 # Create folders to avoid issues when syncing.
-mkdir -p /home/master/netboot/casper/ /home/master/netboot/assets/prod /home/master/netboot/assets/dev /home/master/netboot/assets/kernels
+mkdir -p /home/master/netboot/assets/prod /home/master/netboot/assets/dev /home/master/netboot/assets/kernels /home/master/netboot/assets/caching-server
