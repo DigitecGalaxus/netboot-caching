@@ -16,15 +16,13 @@ The caching server runs a Docker daemon and an Nginx container, which serves the
 
 ## State considerations
 
-The caching server is setup in a way that allows it to be run in-memory only without a disk. This makes the setup easier, however in certain situations (such as a power loss), state is desired. If the caching server does not have state (a disk), it needs to wait for the synchronization from the upstream netboot server.
+The caching-server boots via iPXE too. But as it caches (hence "caching-server") all squashfs-images (including it's own), the iPXE menu for the caching server is configured such that it boots the squashfs file located on it's own harddisk. Still, this boot is stateless: The whole image is loaded to RAM and thereafter no disk access is necessary to run the OS.
 
-### Power loss scenario
 
-In our case, we have setup a very simple architecture: there is one main netboot server in the cloud and one caching server for each on-premise network that has many netboot clients. In some networks, we have 100+ clients, so in case of a power loss, once power is available again, 100+ clients would simultaneously try to boot from the network. In such a scenario, the caching server would have to serve many requests at the same time. If this caching server needs to synchronize the files from the upstream netboot server first, this would make for a very slow network booting process.
+After booting up, the disk will be mounted to the location where the squashfs-images are accessible to be kept up-to-date.
 
-### Bottom line
+So the caching-server will load the most recent image when booting. When booted, the synchronization of the main netboot server makes sure that all images are up-to-date.
 
-Due to these considerations, we have a hybrid approach: for important and large sites, a caching server with a disk is installed. On small sites, the caching servers have no disk.
 
 ## How to add caching-servers
 
@@ -62,18 +60,20 @@ TODO: link to the complete `rsync` command in the netboot README, once the [PR 2
 
 ## How to configure a local stateful disk to cache assets
 
-In case of a power outage it could become critical when all clients (including the caching-server) try to boot from the network simultaneously. Therefore a local disk can be added to cache these images.
+In case of a power outage it could become critical when all clients (including the caching-server) try to boot from the network simultaneously. Therefore a local disk can be added to cache both the caching-server squashfs and images for thinclients.
 
 _Note: This is a manual process._
 
 Make sure to follow the following steps:
 
-1. Install an internal NVMe disk. If you use another type (sata / usb), the below instructions do not match.
-2. Clean the partition table using `dd if=/dev/random of=/dev/nvme0n1` and wait for couple of seconds to wipe it properly.
-3. Create a new partition table using `cfdisk /dev/nvme0n1` and choose GPT as partition table layout as well as Linux Filesystem as the type for the single partition you're creating. Make sure to write the changes to the disk.
-4. Format this partition with ext4 using `mkfs.ext4 /dev/nvme0n1p1`.
+1. Install an internal disk (you can use NVMe, SATA or VirtIO disks).
+2. Clean the partition table using `dd if=/dev/random of=/dev/<disk>` and wait for couple of seconds to wipe it properly.
+3. Create a new partition table using `cfdisk /dev/<disk>` and choose GPT as partition table layout as well as Linux Filesystem as the type for the single partition you're creating. Make sure to write the changes to the disk.
+4. Format this partition with ext4 using `mkfs.ext4 /dev/<partition>`.
 5. After this and a reboot, you can confirm that the partition is mounted using `mount`.
-6. Make sure the permissions are set properly using `chown -R master.master netboot/assets`.
+6. Now create the two necessary directories using `mkdir -p netboot/assets netboot/casper`.
+7. Make sure the permissions are set properly using `chown -R master.master netboot/*`.
+8. Change the Caching-Server ipxe to boot from the local disk inside the netboot repository.
 
 You're done setting up a stateful disk.
 

@@ -41,9 +41,10 @@ COPY fs/docker-compose.service /etc/systemd/system/docker-compose@.service
 RUN mkdir -p /etc/systemd/system/local.target.wants/
 RUN ln -s /etc/systemd/system/docker-compose@.service /etc/systemd/system/multi-user.target.wants/docker-compose@caching-http.service
 
-# Copy and activate the systemd-files for a stateful assets mount
-COPY fs/assets.mount /etc/systemd/system/home-master-netboot-assets.mount
-RUN ln -s /etc/systemd/system/home-master-netboot-assets.mount /etc/systemd/system/multi-user.target.wants/home-master-netboot-assets.mount
+# Copy and configure automatic disk mounting to start upon boot.
+COPY ./fs/automounter.sh /usr/local/share/scripts/automounter.sh
+COPY ./fs/automounter.service /etc/systemd/system/automounter.service
+RUN sudo ln -s /etc/systemd/system/automounter.service /etc/systemd/system/multi-user.target.wants/automounter.service
 
 # Upgrade all packages
 # Invalidating the Docker build cache first
