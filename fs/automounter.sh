@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-# Simply running three mount commands: The existing drives will be mounted and it's impossible two are available at the same time: NUCs have NVMEs (nvmeX), Proxmox-VMs have SSDs (vdaX/sdaX).
+# Simply running three mount commands: The existing drive will be mounted and it's unlikely two are available at the same time: NUCs have NVMEs (nvmeX), Proxmox-VMs have SSDs (vdaX/sdaX).
 mount -o defaults,nofail /dev/vda1 /home/master/netboot
 mount -o defaults,nofail /dev/sda1 /home/master/netboot
 mount -o defaults,nofail /dev/nvme0n1p1 /home/master/netboot
