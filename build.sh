@@ -28,7 +28,7 @@ docker wait "$containerID"
 echo ">>>Exporting SquashFS"
 docker cp "$containerID:/var/live/newfilesystem.squashfs" ./new.squashfscaching
 echo ">>>Uploading SquashFS"
-scp -o 'StrictHostKeyChecking=no' -i "$netbootPrivateKeyPath" ./new.squashfscaching "$netbootUsername@$netbootIP:$netbootAssetsDirectory/caching-server/netboot-caching-server.squashfs"
+scp -o 'StrictHostKeyChecking=no' -i "$netbootPrivateKeyPath" ./new.squashfscaching "$netbootUsername@$netbootIP:$netbootAssetsDirectory/caching-server/casper/netboot-caching-server.squashfs"
 echo ">>>Cleaning up"
 docker rm -f "$containerID"
 rm -f "$(pwd)"/newfilesystemcaching.tar
