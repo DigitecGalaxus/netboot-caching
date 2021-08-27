@@ -7,3 +7,4 @@ mount -o defaults,nofail /dev/nvme0n1p1 /home/master/netboot/assets
 
 # Create folders to avoid issues when syncing.
 mkdir -p /home/master/netboot/assets/prod /home/master/netboot/assets/dev /home/master/netboot/assets/kernels /home/master/netboot/assets/caching-server
+chown -R master.master /home/master/netboot/assets/
