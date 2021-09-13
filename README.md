@@ -68,10 +68,11 @@ Make sure to follow the following steps:
 
 1. Install an internal disk (you can use NVMe, SATA or VirtIO disks).
 2. Clean the partition table using `dd if=/dev/random of=/dev/<disk>` and wait for couple of seconds to wipe it properly.
-3. Create a new partition table using `fdisk /dev/<disk>` and choose GPT as partition table layout as well as Linux Filesystem as the type for the **two** partitions you're creating: The first one with 1GB and the second one with the remaining available space. Make sure to write the changes to the disk.
-4. Format both partitions with ext4 using `mkfs.ext4 /dev/<partition>`. After that, restart the automounter: `systemctl restart automounter.service`.
-5. Now trigger a complete resync from the netboot server.
-6. Change the Caching-Server ipxe to boot from the local disk inside the netboot repository.
+3. Make sure that you have installed `fdisk`. You can do so with `sudo apt-get update && sudo apt-get install fdisk`
+4. Create a new partition table using `cfdisk /dev/<disk>` and choose GPT as partition table layout as well as Linux Filesystem as the type for the **two** partitions you're creating: The first one with 1GB and the second one with the remaining available space. Make sure to write the changes to the disk.
+5. Format both partitions with ext4 using `mkfs.ext4 /dev/<partition>`. After that, restart the automounter: `systemctl restart automounter.service`.
+6. Now trigger a complete resync from the netboot server.
+7. Change the Caching-Server ipxe to boot from the local disk inside the netboot repository.
 
 You're done setting up a stateful disk.
 
