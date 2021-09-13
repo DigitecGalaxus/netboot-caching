@@ -68,7 +68,7 @@ Make sure to follow the following steps:
 
 1. Install an internal disk (you can use NVMe, SATA or VirtIO disks).
 2. Clean the partition table using `dd if=/dev/random of=/dev/<disk>` and wait for couple of seconds to wipe it properly.
-3. Create a new partition table using `cfdisk /dev/<disk>` and choose GPT as partition table layout as well as Linux Filesystem as the type for the single partition you're creating. Make sure to write the changes to the disk.
+3. Create a new partition table using `fdisk /dev/<disk>` and choose GPT as partition table layout as well as Linux Filesystem as the type for the single partition you're creating. Make sure to write the changes to the disk.
 4. Format this partition with ext4 using `mkfs.ext4 /dev/<partition>`.
 5. After this and a reboot, you can confirm that the partition is mounted using `mount`.
 6. Now create the two necessary directories using `mkdir -p netboot/assets netboot/casper`.
