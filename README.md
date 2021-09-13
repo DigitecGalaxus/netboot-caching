@@ -60,7 +60,7 @@ TODO: link to the complete `rsync` command in the netboot README, once the [PR 2
 
 ## How to configure a local stateful disk to cache assets
 
-In case of a power outage it could become critical when all clients (including the caching-server) try to boot from the network simultaneously. Therefore a local disk can be added to cache both the caching-server squashfs and images for thinclients.
+In case of a power outage it could become critical when all clients (including the caching-server) try to boot from the network simultaneously. Therefore a local disk can be added to cache both the caching-server squashfs and images for thinclients. The disk needs to have two partitions.
 
 _Note: This is a manual process._
 
@@ -68,7 +68,7 @@ Make sure to follow the following steps:
 
 1. Install an internal disk (you can use NVMe, SATA or VirtIO disks).
 2. Clean the partition table using `dd if=/dev/random of=/dev/<disk>` and wait for couple of seconds to wipe it properly.
-3. Create a new partition table using `fdisk /dev/<disk>` and choose GPT as partition table layout as well as Linux Filesystem as the type for the two partitions you're creating: The first one with 1GB and the second one with the remaining available space. Make sure to write the changes to the disk.
+3. Create a new partition table using `fdisk /dev/<disk>` and choose GPT as partition table layout as well as Linux Filesystem as the type for the **two** partitions you're creating: The first one with 1GB and the second one with the remaining available space. Make sure to write the changes to the disk.
 4. Format both partitions with ext4 using `mkfs.ext4 /dev/<partition>`. After that, restart the automounter: `systemctl restart automounter.service`.
 5. Now trigger a complete resync from the netboot server.
 6. Change the Caching-Server ipxe to boot from the local disk inside the netboot repository.
