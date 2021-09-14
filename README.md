@@ -60,14 +60,18 @@ TODO: link to the complete `rsync` command in the netboot README, once the [PR 2
 
 ## How to configure a local stateful disk to cache assets
 
-In case of a power outage it could become critical when all clients (including the caching-server) try to boot from the network simultaneously. Therefore a local disk can be added to cache both the caching-server squashfs and images for thinclients. The disk needs to have two partitions.
+In case of a power outage it could become critical when all clients (including the caching-server) try to boot from the network simultaneously. Therefore a local disk can be added to cache both the caching-server squashfs and images for thinclients. The disk needs to have two partitions: One for the cached images as well as one for the caching-server image which is used to boot locally.
+
+Note, that the caching-servers still netboot from the central netboot server. But this time, the central server will reference to the local diskpartition which has a /casper folder available.
+
+See: https://github.com/DigitecGalaxus/netboot/blob/main/netboot-services/ipxeMenuGenerator/caching-server.ipxe.tmpl and https://manpages.ubuntu.com/manpages/hirsute/man7/casper.7.html
 
 _Note: This is a manual process._
 
 Make sure to follow the following steps:
 
 1. Install an internal disk (you can use NVMe, SATA or VirtIO disks).
-2. Clean the partition table using `dd if=/dev/random of=/dev/<disk>` and wait for couple of seconds to wipe it properly.
+2. Clean the partition table using `dd if=/dev/random of=/dev/<disk>` and wait for couple of seconds before pressing CTRL-C to wipe it properly.
 3. Make sure that you have installed `fdisk`. You can do so with `sudo apt-get update && sudo apt-get install fdisk`
 4. Create a new partition table using `cfdisk /dev/<disk>` and choose GPT as partition table layout as well as Linux Filesystem as the type for the **two** partitions you're creating: The first one with 1GB and the second one with the remaining available space. Make sure to write the changes to the disk.
 5. Format both partitions with ext4 using `mkfs.ext4 /dev/<partition>`. After that, restart the automounter: `systemctl restart automounter.service`.
