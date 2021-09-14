@@ -18,11 +18,9 @@ The caching server runs a Docker daemon and an Nginx container, which serves the
 
 The caching-server boots via iPXE too. But as it caches (hence "caching-server") all squashfs-images (including it's own), the iPXE menu for the caching server is configured such that it boots the squashfs file located on it's own harddisk. Still, this boot is stateless: The whole image is loaded to RAM and thereafter no disk access is necessary to run the OS.
 
-
 After booting up, the disk will be mounted to the location where the squashfs-images are accessible to be kept up-to-date.
 
 So the caching-server will load the most recent image when booting. When booted, the synchronization of the main netboot server makes sure that all images are up-to-date.
-
 
 ## How to add caching-servers
 
@@ -64,7 +62,7 @@ In case of a power outage it could become critical when all clients (including t
 
 Note, that the caching-servers still netboot from the central netboot server. But this time, the central server will reference to the local diskpartition which has a /casper folder available.
 
-See: https://github.com/DigitecGalaxus/netboot/blob/main/netboot-services/ipxeMenuGenerator/caching-server.ipxe.tmpl and https://manpages.ubuntu.com/manpages/hirsute/man7/casper.7.html
+See: [caching-server.ipxe.tmpl](https://github.com/DigitecGalaxus/netboot/blob/main/netboot-services/ipxeMenuGenerator/caching-server.ipxe.tmpl) and [casper - a hook for initramfs-tools to boot live systems](https://manpages.ubuntu.com/manpages/hirsute/man7/casper.7.html)
 
 We need to create two partitions which are mounted respectevly to sync the images accordingly (to assets and to casper). This way, we make sure the caching-servers boot the proper image locally.
 
