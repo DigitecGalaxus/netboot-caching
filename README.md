@@ -66,6 +66,8 @@ Note, that the caching-servers still netboot from the central netboot server. Bu
 
 See: https://github.com/DigitecGalaxus/netboot/blob/main/netboot-services/ipxeMenuGenerator/caching-server.ipxe.tmpl and https://manpages.ubuntu.com/manpages/hirsute/man7/casper.7.html
 
+We need to create two partitions which are mounted respectevly to sync the images accordingly (to assets and to casper). This way, we make sure the caching-servers boot the proper image locally.
+
 _Note: This is a manual process._
 
 Make sure to follow the following steps:
