@@ -18,11 +18,9 @@ The caching server runs a Docker daemon and an Nginx container, which serves the
 
 The caching-server boots via iPXE too. But as it caches (hence "caching-server") all squashfs-images (including it's own), the iPXE menu for the caching server is configured such that it boots the squashfs file located on it's own harddisk. Still, this boot is stateless: The whole image is loaded to RAM and thereafter no disk access is necessary to run the OS.
 
-
 After booting up, the disk will be mounted to the location where the squashfs-images are accessible to be kept up-to-date.
 
 So the caching-server will load the most recent image when booting. When booted, the synchronization of the main netboot server makes sure that all images are up-to-date.
-
 
 ## How to add caching-servers
 
@@ -60,20 +58,25 @@ TODO: link to the complete `rsync` command in the netboot README, once the [PR 2
 
 ## How to configure a local stateful disk to cache assets
 
-In case of a power outage it could become critical when all clients (including the caching-server) try to boot from the network simultaneously. Therefore a local disk can be added to cache both the caching-server squashfs and images for thinclients.
+In case of a power outage it could become critical when all clients (including the caching-server) try to boot from the network simultaneously. Therefore a local disk can be added to cache both the caching-server squashfs and images for thinclients. The disk needs to have two partitions: One for the cached images as well as one for the caching-server image which is used to boot locally.
+
+Note, that the caching-servers still netboot from the central netboot server. But this time, the central server will reference to the local diskpartition which has a /casper folder available.
+
+See: [caching-server.ipxe.tmpl](https://github.com/DigitecGalaxus/netboot/blob/main/netboot-services/ipxeMenuGenerator/caching-server.ipxe.tmpl) and [casper - a hook for initramfs-tools to boot live systems](https://manpages.ubuntu.com/manpages/hirsute/man7/casper.7.html)
+
+We need to create two partitions which are mounted respectevly to sync the images accordingly (to assets and to casper). This way, we make sure the caching-servers boot the proper image locally.
 
 _Note: This is a manual process._
 
 Make sure to follow the following steps:
 
 1. Install an internal disk (you can use NVMe, SATA or VirtIO disks).
-2. Clean the partition table using `dd if=/dev/random of=/dev/<disk>` and wait for couple of seconds to wipe it properly.
-3. Create a new partition table using `cfdisk /dev/<disk>` and choose GPT as partition table layout as well as Linux Filesystem as the type for the single partition you're creating. Make sure to write the changes to the disk.
-4. Format this partition with ext4 using `mkfs.ext4 /dev/<partition>`.
-5. After this and a reboot, you can confirm that the partition is mounted using `mount`.
-6. Now create the two necessary directories using `mkdir -p netboot/assets netboot/casper`.
-7. Make sure the permissions are set properly using `chown -R master.master netboot/*`.
-8. Change the Caching-Server ipxe to boot from the local disk inside the netboot repository.
+2. Clean the partition table using `dd if=/dev/random of=/dev/<disk>` and wait for couple of seconds before pressing CTRL-C to wipe it properly.
+3. Make sure that you have installed `fdisk`. You can do so with `sudo apt-get update && sudo apt-get install fdisk`
+4. Create a new partition table using `cfdisk /dev/<disk>` and choose GPT as partition table layout as well as Linux Filesystem as the type for the **two** partitions you're creating: The first one with 1GB and the second one with the remaining available space. Make sure to write the changes to the disk.
+5. Format both partitions with ext4 using `mkfs.ext4 /dev/<partition>`. After that, restart the automounter: `systemctl restart automounter.service`.
+6. Now trigger a complete resync from the netboot server.
+7. Change the Caching-Server ipxe to boot from the local disk inside the netboot repository.
 
 You're done setting up a stateful disk.
 
