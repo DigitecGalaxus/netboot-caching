@@ -51,10 +51,9 @@ Apart from setting up a caching server physically in the target network (16GB RA
 
 - Make sure the host has a static IP or a DCHP reservation in the target network. This IP should be added to the [caching server list](https://github.com/DigitecGalaxus/netboot/blob/main/netboot-services/cachingServerFetcher/caching_server_list.json)
 - Ensure that the device uses network boot (BIOS settings) and boots the caching server squashfs. Booting the right squashfs can be done with a MAC specific IPXE file on the netboot server. This MAC specific file is automatically created by the [IPXE Menu Generator](https://github.com/DigitecGalaxus/netboot/tree/main/netboot-services/ipxeMenuGenerator)
-- Add the caching server into the IPXE menu to ensure that clients in the network of the caching server use it to access the netboot assets.
-TODO: link to the file on github / or move the menu generation into the ipxe menu generator
-- Once the caching server is online: Trigger a synchronization on the files that need to be synchronized to this caching server, e.g. by `touch`ing them.
-TODO: link to the complete `rsync` command in the netboot README, once the [PR 2](https://github.com/DigitecGalaxus/netboot/pull/2) is merged
+- Make sure that the caching server is defined in the networksService or if not used, in [caching server list](https://github.com/DigitecGalaxus/netboot/blob/main/netboot-services/cachingServerFetcher/caching_server_list.json)
+- Once the caching server is online: Trigger a synchronization on the files that need to be synchronized to this caching server, e.g. by `touch`ing them. For more details, see the [syncer-service](https://github.com/DigitecGalaxus/netboot/tree/main/netboot-services/sync#trigger-a-resync)
+
 
 ## How to configure a local stateful disk to cache assets
 
