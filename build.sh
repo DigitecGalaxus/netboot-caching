@@ -21,7 +21,7 @@ if [[ "$kernelVersion" == "" ]]; then
 echo "Error: could not determine latest kernel version"
 exit 1
 fi
-docker image build --build-arg kernelVersion=$kernelVersion -t netboot-caching-server .
+docker image build --build-arg "kernelVersion=$kernelVersion" -t netboot-caching-server .
 echo ">>>Running image"
 containerID=$(docker run -d netboot-caching-server tail -f /dev/null)
 echo ">>>Tarring container contents"
