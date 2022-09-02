@@ -11,9 +11,10 @@ RUN ln -sf /usr/share/zoneinfo/Europe/Zurich /etc/localtime
 RUN apt-get -qq update && apt-get -qq install -y rsync sudo tree vim htop apt-transport-https ca-certificates gnupg-agent software-properties-common gnupg2 apt-utils libfuse3-dev openssh-server iproute2 fuse-overlayfs > /dev/null 2>&1
 
 # Installing docker
+ARG kernel_version
 RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add -
 RUN sh -c 'add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"'
-RUN apt-get -qq install -y docker-ce docker-ce-cli containerd.io > /dev/null 2>&1
+RUN apt-get -qq install -y docker-ce docker-ce-cli containerd.io linux-modules-$kernel_version > /dev/null 2>&1
 
 # Installing docker-compose
 RUN curl -L "https://github.com/docker/compose/releases/download/1.27.4/docker-compose-Linux-x86_64" -o /usr/local/bin/docker-compose && chmod +x /usr/local/bin/docker-compose

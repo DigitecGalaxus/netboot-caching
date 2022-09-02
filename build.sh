@@ -15,7 +15,13 @@ fi
 echo ">>>Building image"
 # Used to invalidate the Docker build cache
 date >date.txt
-docker image build -t netboot-caching-server .
+# Fetching kernel version as it's needed to install the linux-modules-package.
+kernelVersion=$(curl -s --connect-timeout 2 "http://$netbootIP/kernels/latest-kernel-version.json" | jq -r .version)
+if [[ "$kernelVersion" == "" ]]; then
+echo "Error: could not determine latest kernel version"
+exit 1
+fi
+docker image build --build-arg kernelVersion=$kernelVersion -t netboot-caching-server .
 echo ">>>Running image"
 containerID=$(docker run -d netboot-caching-server tail -f /dev/null)
 echo ">>>Tarring container contents"
